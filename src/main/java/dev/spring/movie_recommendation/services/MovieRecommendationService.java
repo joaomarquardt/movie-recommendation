@@ -3,6 +3,7 @@ package dev.spring.movie_recommendation.services;
 import dev.spring.movie_recommendation.dtos.MovieRecommendationsResponseDTO;
 import dev.spring.movie_recommendation.dtos.MovieResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public class MovieRecommendationService {
     private RestClient restClientTmdb;
     private RestClient restClientMotn;
+    @Value("${tmdb.filter.vote-count-min:500}")
+    private Integer voteCountGte;
 
     public MovieRecommendationService(@Qualifier("restClientTmdb") RestClient restClientTmdb,
                                       @Qualifier("restClientMotn") RestClient restClientMotn) {
@@ -58,6 +61,9 @@ public class MovieRecommendationService {
                     }
                     if (response_language != null) {
                         builder.queryParam("language", response_language);
+                    }
+                    if (voteCountGte != null && voteCountGte > 0) {
+                        builder.queryParam("vote_count.gte", voteCountGte);
                     }
                     return builder.build();
                 })
