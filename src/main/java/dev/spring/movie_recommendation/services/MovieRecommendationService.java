@@ -69,8 +69,16 @@ public class MovieRecommendationService {
                                                  String mood, String with_origin_country, String with_original_language,
                                                  Integer with_runtime_gte, Integer with_runtime_lte, String response_language) {
         MovieRecommendationsResponseDTO movieRecommendations = this.recommendationsByParams(genreIds, decade, sort_by,
-                mood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language);
-        return movieRecommendations.results().isEmpty() ? null : pickRandomMovie(movieRecommendations);
+                mood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language, 1);
+        if (movieRecommendations.results().isEmpty() || movieRecommendations.total_results() == 0) {
+            return null;
+        }
+        Integer totalPages = movieRecommendations.total_pages();
+        int maxPages = Math.min(totalPages, 500); // Limitado a 500 páginas pois a API do TMDB não permite acessar um índice de página maior que esse
+        Random random = new Random();
+        int randomPage = random.nextInt(maxPages) + 1;
+        MovieRecommendationsResponseDTO randomPageRecommendations = this.recommendationsByParams(genreIds, decade, sort_by, mood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language, randomPage);
+        return movieRecommendations.results().isEmpty() ? null : pickRandomMovie(randomPageRecommendations);
     }
 
     private MovieResponseDTO pickRandomMovie(MovieRecommendationsResponseDTO movieRecommendationsResponseDTO) {
