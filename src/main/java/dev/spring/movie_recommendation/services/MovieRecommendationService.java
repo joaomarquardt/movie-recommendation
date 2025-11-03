@@ -62,6 +62,9 @@ public class MovieRecommendationService {
                     if (response_language != null) {
                         builder.queryParam("language", response_language);
                     }
+                    if (page != null && page > 0) {
+                        builder.queryParam("page", page);
+                    }
                     if (voteCountGte != null && voteCountGte > 0) {
                         builder.queryParam("vote_count.gte", voteCountGte);
                     }
