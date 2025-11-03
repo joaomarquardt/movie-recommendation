@@ -31,9 +31,9 @@ public class MovieRecommendationService {
         this.restClientMotn = restClientMotn;
     }
 
-    public MovieRecommendationsResponseDTO recommendationsByParams(List<Long> genreIds, Integer decade, String sort_by, String mood, String with_origin_country,
-                                                                   String with_original_language, Integer with_runtime_gte,
-                                                                   Integer with_runtime_lte, String response_language, Integer page) {
+    public MovieRecommendationsResponseDTO recommendationsByParams(List<Long> genreIds, Integer decade, String sortBy, String mood, String withOriginCountry,
+                                                                   String withOriginalLanguage, Integer withRuntimeGte,
+                                                                   Integer withRuntimeLte, String responseLanguage, Integer page) {
         List<Long> finalGenreIds = new ArrayList<>();
         if (genreIds != null && !genreIds.isEmpty()) {
             finalGenreIds.addAll(genreIds);
@@ -57,29 +57,29 @@ public class MovieRecommendationService {
                                 .collect(Collectors.joining(","));
                         builder.queryParam("with_genres", genreString);
                     }
-                    if (with_original_language != null) {
-                        builder.queryParam("with_original_language", with_original_language);
+                    if (withOriginalLanguage != null) {
+                        builder.queryParam("withOriginalLanguage", withOriginalLanguage);
                     }
-                    if (with_origin_country != null) {
-                        builder.queryParam("with_origin_country", with_origin_country);
+                    if (withOriginCountry != null) {
+                        builder.queryParam("withOriginCountry", withOriginCountry);
                     }
-                    if (sort_by != null) {
-                        builder.queryParam("sort_by", sort_by);
+                    if (sortBy != null) {
+                        builder.queryParam("sortBy", sortBy);
                     }
                     if (decade != null) {
-                        String release_date_gte = decade + "-01-01";
+                        String releaseDateGte = decade + "-01-01";
                         int limitYear = decade + 9;
-                        String release_date_lte = limitYear + "-12-31";
+                        String releaseDateLte = limitYear + "-12-31";
 
-                        builder.queryParam("primary_release_date.gte", release_date_gte);
-                        builder.queryParam("primary_release_date.lte", release_date_lte);
+                        builder.queryParam("primary_release_date.gte", releaseDateGte);
+                        builder.queryParam("primary_release_date.lte", releaseDateLte);
                     }
-                    if (with_runtime_gte != null && with_runtime_lte != null) {
-                        builder.queryParam("with_runtime.gte", with_runtime_gte);
-                        builder.queryParam("with_runtime.lte", with_runtime_lte);
+                    if (withRuntimeGte != null && withRuntimeLte != null) {
+                        builder.queryParam("with_runtime.gte", withRuntimeGte);
+                        builder.queryParam("with_runtime.lte", withRuntimeLte);
                     }
-                    if (response_language != null) {
-                        builder.queryParam("language", response_language);
+                    if (responseLanguage != null) {
+                        builder.queryParam("language", responseLanguage);
                     }
                     if (page != null && page > 0) {
                         builder.queryParam("page", page);
@@ -96,21 +96,21 @@ public class MovieRecommendationService {
                 .body(new ParameterizedTypeReference<MovieRecommendationsResponseDTO>() {});
     }
 
-    public MovieResponseDTO randomRecommendation(List<Long> genreIds, Integer decade, String sort_by,
-                                                 String mood, String with_origin_country, String with_original_language,
-                                                 Integer with_runtime_gte, Integer with_runtime_lte, String response_language) {
-        String finalSortBy = sort_by != null ? sort_by : SortByOptions.getRandomSortBy().getValue();
+    public MovieResponseDTO randomRecommendation(List<Long> genreIds, Integer decade, String sortBy,
+                                                 String mood, String withOriginCountry, String withOriginalLanguage,
+                                                 Integer withRuntimeGte, Integer withRuntimeLte, String responseLanguage) {
+        String finalSortBy = sortBy != null ? sortBy : SortByOptions.getRandomSortBy().getValue();
         String finalMood = mood != null ? mood : MoodOptions.getRandomMood().name();
         MovieRecommendationsResponseDTO movieRecommendations = this.recommendationsByParams(genreIds, decade, finalSortBy,
-                finalMood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language, 1);
-        if (movieRecommendations.results().isEmpty() || movieRecommendations.total_results() == 0) {
+                finalMood, withOriginCountry, withOriginalLanguage, withRuntimeGte, withRuntimeLte, responseLanguage, 1);
+        if (movieRecommendations.results().isEmpty() || movieRecommendations.totalResults() == 0) {
             return null;
         }
-        Integer totalPages = movieRecommendations.total_pages();
+        Integer totalPages = movieRecommendations.totalPages();
         int maxPages = Math.min(totalPages, 500); // Limitado a 500 páginas pois a API do TMDB não permite acessar um índice de página maior que esse
         Random random = new Random();
         int randomPage = random.nextInt(maxPages) + 1;
-        MovieRecommendationsResponseDTO randomPageRecommendations = this.recommendationsByParams(genreIds, decade, finalSortBy, finalMood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language, randomPage);
+        MovieRecommendationsResponseDTO randomPageRecommendations = this.recommendationsByParams(genreIds, decade, finalSortBy, finalMood, withOriginCountry, withOriginalLanguage, withRuntimeGte, withRuntimeLte, responseLanguage, randomPage);
         return movieRecommendations.results().isEmpty() ? null : pickRandomMovie(randomPageRecommendations);
     }
 

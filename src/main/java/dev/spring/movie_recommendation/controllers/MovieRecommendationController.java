@@ -23,18 +23,18 @@ public class MovieRecommendationController {
     }
 
     @GetMapping("/recommendations")
-    public ResponseEntity<MovieRecommendationsResponseDTO> recommendationsByParams(@RequestParam(required = false)List<Long> genreIds, @RequestParam(required = false) Integer decade, @RequestParam(required = false) String sort_by,
-                                                    @RequestParam(required = false) String mood, @RequestParam(required = false) String with_origin_country, @RequestParam(required = false) String with_original_language, @RequestParam(required = false) Integer with_runtime_gte,
-                                                    @RequestParam(required = false) Integer with_runtime_lte, @RequestParam(required = false) String response_language, @RequestParam(required = false) Integer page) {
-        MovieRecommendationsResponseDTO movieRecommendations = movieRecommendationService.recommendationsByParams(genreIds, decade, sort_by, mood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language, page);
+    public ResponseEntity<MovieRecommendationsResponseDTO> recommendationsByParams(@RequestParam(required = false)List<Long> genreIds, @RequestParam(required = false) Integer decade, @RequestParam(required = false) String sortBy,
+                                                    @RequestParam(required = false) String mood, @RequestParam(required = false) String withOriginCountry, @RequestParam(required = false) String withOriginalLanguage, @RequestParam(required = false) Integer withRuntimeGte,
+                                                    @RequestParam(required = false) Integer withRuntimeLte, @RequestParam(required = false) String responseLanguage, @RequestParam(required = false) Integer page) {
+        MovieRecommendationsResponseDTO movieRecommendations = movieRecommendationService.recommendationsByParams(genreIds, decade, sortBy, mood, withOriginCountry, withOriginalLanguage, withRuntimeGte, withRuntimeLte, responseLanguage, page);
         return new ResponseEntity<>(movieRecommendations, HttpStatus.OK);
     }
 
     @GetMapping("/recommendations/random")
-    public ResponseEntity<MovieResponseDTO> randomRecommendation(@RequestParam(required = false)List<Long> genreIds, @RequestParam(required = false) Integer decade, @RequestParam(required = false) String sort_by,
-                                                                                   @RequestParam(required = false) String mood, @RequestParam(required = false) String with_origin_country, @RequestParam(required = false) String with_original_language, @RequestParam(required = false) Integer with_runtime_gte,
-                                                                                   @RequestParam(required = false) Integer with_runtime_lte, @RequestParam(required = false) String response_language) {
-        MovieResponseDTO movieRecommendations = movieRecommendationService.randomRecommendation(genreIds, decade, sort_by, mood, with_origin_country, with_original_language, with_runtime_gte, with_runtime_lte, response_language);
+    public ResponseEntity<MovieResponseDTO> randomRecommendation(@RequestParam(required = false)List<Long> genreIds, @RequestParam(required = false) Integer decade, @RequestParam(required = false) String sortBy,
+                                                                                   @RequestParam(required = false) String mood, @RequestParam(required = false) String withOriginCountry, @RequestParam(required = false) String withOriginalLanguage, @RequestParam(required = false) Integer withRuntimeGte,
+                                                                                   @RequestParam(required = false) Integer withRuntimeLte, @RequestParam(required = false) String responseLanguage) {
+        MovieResponseDTO movieRecommendations = movieRecommendationService.randomRecommendation(genreIds, decade, sortBy, mood, withOriginCountry, withOriginalLanguage, withRuntimeGte, withRuntimeLte, responseLanguage);
         return new ResponseEntity<>(movieRecommendations, HttpStatus.OK);
     }
 
