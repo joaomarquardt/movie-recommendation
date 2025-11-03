@@ -34,7 +34,6 @@ public class MovieRecommendationService {
                                 .map(String::valueOf)
                                 .collect(Collectors.joining(","));
                         builder.queryParam("with_genres", genreString);
-                        builder.queryParam("with_genres", genreString);
                     }
                     if (with_original_language != null) {
                         builder.queryParam("with_original_language", with_original_language);
