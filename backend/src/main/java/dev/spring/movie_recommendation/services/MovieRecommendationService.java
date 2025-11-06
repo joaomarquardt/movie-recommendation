@@ -22,16 +22,13 @@ import java.util.stream.Collectors;
 @Service
 public class MovieRecommendationService {
     private RestClient restClientTmdb;
-    private RestClient restClientMotn;
     @Value("${tmdb.filter.vote-count-min:500}")
     private Integer voteCountGte;
     @Value("${tmdb.filter.vote-average-min:6}")
     private Double voteAverageGte;
 
-    public MovieRecommendationService(@Qualifier("restClientTmdb") RestClient restClientTmdb,
-                                      @Qualifier("restClientMotn") RestClient restClientMotn) {
+    public MovieRecommendationService(@Qualifier("restClientTmdb") RestClient restClientTmdb) {
         this.restClientTmdb = restClientTmdb;
-        this.restClientMotn = restClientMotn;
     }
 
     public MovieRecommendationsResponseDTO recommendationsByParams(List<Long> genreIds, Integer decade, String sortBy, String mood, String withOriginCountry,
