@@ -57,7 +57,7 @@ public class MovieRecommendationService {
                         String genreString = finalGenreIds.stream()
                                 .map(String::valueOf)
                                 .distinct()
-                                .collect(Collectors.joining(","));
+                                .collect(Collectors.joining("or"));
                         builder.queryParam("with_genres", genreString);
                     }
                     if (withOriginalLanguage != null) {
