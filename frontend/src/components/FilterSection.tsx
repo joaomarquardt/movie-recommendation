@@ -75,7 +75,7 @@ const FilterSection: React.FC<Props> = ({ filters, onFiltersChange }) => {
 
   return (
     <div className="filter-section">
-      <h3 className="filter-title">🎛️ Personalize sua Busca</h3>
+      <h3 className="filter-title">Personalize sua Busca</h3>
 
       <div className="filter-group">
         <label className="filter-label">Gêneros Favoritos</label>
