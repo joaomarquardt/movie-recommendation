@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @Service
 public class MovieRecommendationService {
     private RestClient restClientTmdb;
-    @Value("${tmdb.filter.vote-count-min:500}")
+    @Value("${TMDB_FILTER_VOTE_COUNT_MIN:500}")
     private Integer voteCountGte;
-    @Value("${tmdb.filter.vote-average-min:6}")
+    @Value("${TMDB_FILTER_VOTE_AVERAGE_MIN:6}")
     private Double voteAverageGte;
 
     public MovieRecommendationService(@Qualifier("restClientTmdb") RestClient restClientTmdb) {

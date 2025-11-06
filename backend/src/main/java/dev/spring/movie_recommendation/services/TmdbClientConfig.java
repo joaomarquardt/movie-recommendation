@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 public class TmdbClientConfig {
 
     @Bean
-    public RestClient restClientTmdb(@Value("${tmdb.api.url}") String tmdbApiUrl, @Value("${tmdb.api.token}") String tmdbApiToken) {
+    public RestClient restClientTmdb(@Value("${TMDB_API_URL}") String tmdbApiUrl, @Value("${TMDB_API_TOKEN}") String tmdbApiToken) {
         return RestClient.builder()
                 .baseUrl(tmdbApiUrl)
                 .defaultHeader("Authorization", "Bearer " + tmdbApiToken)
