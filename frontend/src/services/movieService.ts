@@ -1,6 +1,6 @@
 import { type Movie, type MovieRecommendationsResponse, type MovieFilters } from '../types/Movie';
 
-const API_BASE_URL = 'http://localhost:8080/api/movies';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/movies';
 
 export class MovieService {
   static async getRecommendations(filters: MovieFilters): Promise<MovieRecommendationsResponse> {
