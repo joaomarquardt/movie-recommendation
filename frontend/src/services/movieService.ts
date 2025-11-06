@@ -16,7 +16,7 @@ export class MovieService {
       }
     });
 
-    const response = await fetch(`${API_BASE_URL}/recommendations?${params}`);
+    const response = await fetch(`${API_BASE_URL}/recommendations?${params}&responseLanguage=pt-BR`);
 
     if (!response.ok) {
       throw new Error(`Error fetching recommendations: ${response.statusText}`);
@@ -38,10 +38,23 @@ export class MovieService {
       }
     });
 
-    const response = await fetch(`${API_BASE_URL}/recommendations/random?${params}`);
+    const response = await fetch(`${API_BASE_URL}/recommendations/random?${params}&responseLanguage=pt-BR`);
 
     if (!response.ok) {
       throw new Error(`Error fetching random recommendation: ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  static async getMovieDetails(movieId: number): Promise<any> {
+    debugger;
+    const response = await fetch(
+      `${API_BASE_URL}/${movieId}/details?&responseLanguage=pt-BR`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error fetching movie details: ${response.statusText}`);
     }
 
     return response.json();
