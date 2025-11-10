@@ -171,7 +171,7 @@ const FilterSection: React.FC<Props> = ({ filters, onFiltersChange }) => {
         </div>
 
         <div className="filter-group">
-          <label className="filter-label">Duração Máxima (min)</label>
+          <label className="filter-label">Duração Máxima (máx)</label>
           <input
             type="number"
             value={filters.withRuntimeLte || ''}
