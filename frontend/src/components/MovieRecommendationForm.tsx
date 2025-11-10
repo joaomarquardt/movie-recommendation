@@ -4,6 +4,7 @@ import { MovieService } from '../services/movieService';
 import RecommendationTypeSelector from './RecommendationTypeSelector';
 import FilterSection from './FilterSection';
 import MovieResults from './MovieResults';
+import Pagination from './Pagination';
 import '../styles/MovieRecommendationForm.css';
 
 const MovieRecommendationForm: React.FC = () => {
@@ -13,21 +14,33 @@ const MovieRecommendationForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [singleMovie, setSingleMovie] = useState<Movie | null>(null);
   const [movieCollection, setMovieCollection] = useState<MovieRecommendationsResponse | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setCurrentPage(1);
+    await fetchMovies(1);
+  };
+
+  const fetchMovies = async (page: number = 1) => {
     setLoading(true);
     setError(null);
-    setSingleMovie(null);
-    setMovieCollection(null);
+    if (recommendationType === 'single') {
+      setSingleMovie(null);
+      setMovieCollection(null);
+    }
 
     try {
       if (recommendationType === 'single') {
         const movie = await MovieService.getRandomRecommendation(filters);
         setSingleMovie(movie);
+        setMovieCollection(null);
       } else {
-        const collection = await MovieService.getRecommendations(filters);
+        const filtersWithPage = { ...filters, page };
+        const collection = await MovieService.getRecommendations(filtersWithPage);
         setMovieCollection(collection);
+        setSingleMovie(null);
+        setCurrentPage(page);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao buscar recomendações');
@@ -36,12 +49,18 @@ const MovieRecommendationForm: React.FC = () => {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    fetchMovies(page);
+  };
+
   const handleReset = () => {
     setFilters({});
     setRecommendationType('collection');
     setSingleMovie(null);
     setMovieCollection(null);
     setError(null);
+    setCurrentPage(1);
   };
 
   return (
@@ -91,6 +110,14 @@ const MovieRecommendationForm: React.FC = () => {
         movieCollection={movieCollection}
         loading={loading}
       />
+
+      {movieCollection && movieCollection.total_pages > 1 && !loading && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={movieCollection.total_pages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };
